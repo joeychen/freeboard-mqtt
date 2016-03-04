@@ -10,7 +10,7 @@
 		"display_name": "Paho MQTT",
         "description" : "Receive data from an MQTT server.",
 		"external_scripts" : [
-			"plugins/mqtt/mqttws31.js"
+			"<full address of the paho mqtt javascript client>"
 		],
 		"settings"    : [
 			{
@@ -18,14 +18,14 @@
 				"display_name" : "MQTT Socket Path",
 				"type"         : "text",
 				"description"  : "Path for your MQTT Server WebSocket, Leave off ws:// prefix for relative urls",
-                // "required" : true
+				// "required" : true
 			},
 			{
 				"name"         : "server",
 				"display_name" : "MQTT Server",
 				"type"         : "text",
 				"description"  : "Hostname for your MQTT Server",
-                // "required" : true
+				// "required" : true
 			},
 			{
 				"name"         : "port",
