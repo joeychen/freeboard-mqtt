@@ -10,22 +10,30 @@
 		"display_name": "Paho MQTT",
         "description" : "Receive data from an MQTT server.",
 		"external_scripts" : [
-			"<full address of the paho mqtt javascript client>"
+			"plugins/mqtt/mqttws31.js"
 		],
 		"settings"    : [
+			{
+				"name"         : "path",
+				"display_name" : "MQTT Socket Path",
+				"type"         : "text",
+				"description"  : "Path for your MQTT Server WebSocket, Leave off ws:// prefix for relative urls",
+                // "required" : true
+			},
 			{
 				"name"         : "server",
 				"display_name" : "MQTT Server",
 				"type"         : "text",
 				"description"  : "Hostname for your MQTT Server",
-                "required" : true
+                // "required" : true
 			},
 			{
-				"name"        : "port",
-				"display_name": "Port",
-				"type"        : "number", 
-				"description" : "The port to connect to the MQTT Server on",
-				"required"    : true
+				"name"         : "port",
+				"display_name" : "Port",
+				"type"         : "number", 
+				"description"  : "The port to connect to the MQTT Server on",
+				"default_value": 0,
+				// "required"    : true
 			},
 			{
 				"name"        : "use_ssl",
@@ -134,9 +142,18 @@
 			client = {};
 		}
 
-		var client = new Paho.MQTT.Client(currentSettings.server,
-										currentSettings.port, 
-										currentSettings.client_id);
+		if (currentSettings.server && currentSettings.port) {
+			var client = new Paho.MQTT.Client(currentSettings.server,
+											currentSettings.port, 
+											currentSettings.client_id);
+		} else {
+			var path = currentSettings.path
+			if (!currentSettings.path.match(/^wss?:/)) path = (currentSettings.use_ssl ? 'wss://' : 'ws://') + location.host + path
+			var client = new Paho.MQTT.Client(path,
+											currentSettings.client_id);
+		}
+
+
 		client.onConnectionLost = onConnectionLost;
 		client.onMessageArrived = onMessageArrived;
 		client.connect({onSuccess:onConnect, 
