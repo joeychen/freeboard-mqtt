@@ -10,7 +10,7 @@
 		"display_name": "Paho MQTT",
         "description" : "Receive data from an MQTT server.",
 		"external_scripts" : [
-			"<full address of the paho mqtt javascript client>"
+			"plugins/mqtt/mqttws31.js"
 		],
 		"settings"    : [
 			{
@@ -118,7 +118,10 @@
 		// Allow datasource to post mqtt messages
 		self.send = function(value) {
 			if (client.isConnected()) {
-				if (typeof(value) == 'boolean') value = value ? 1 : 0;
+        //move to onCalculatedValueChanged in plugins
+				//if (typeof(value) == 'boolean') value = value ? 1 : 0;
+				//mcs format
+				//value = new Date().getTime() + "," + currentSettings.client_id + "," + value;
 				var message = new Paho.MQTT.Message(String(value));
 		        message.destinationName = currentSettings.topic;
 		        client.send(message);
